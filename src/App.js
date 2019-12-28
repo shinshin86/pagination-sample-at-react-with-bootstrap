@@ -16,16 +16,39 @@ export default function() {
     const fetchData = async () => {
       setIsFetching(true);
 
+      // Fetch data
       await getTestData();
-      const data = await getTestData();
-      setUsetList(data);
+      const offset = (pageState.currentPage - 1) * pageState.maxPerPage;
+      const { userList, userCount } = await getTestData({ offset });
+      setUsetList(userList);
       setIsFetching(false);
-      const totalPage = Math.ceil(data.length / pageState.maxPerPage);
+
+      // Update pagination state
+      const totalPage = Math.ceil(userCount / pageState.maxPerPage);
       setPageState(Object.assign({ ...pageState }, { totalPage }));
     };
 
     fetchData();
   }, []);
+
+  const handleClickPagination = async nextPageNumber => {
+    setIsFetching(true);
+
+    // Fetch data
+    const offset = (nextPageNumber - 1) * pageState.maxPerPage;
+    const { userList, userCount } = await getTestData({ offset });
+    setUsetList(userList);
+    setIsFetching(false);
+
+    // Updata pagination state
+    const totalPage = Math.ceil(userCount / pageState.maxPerPage);
+    setPageState(
+      Object.assign(
+        { ...pageState },
+        { totalPage, currentPage: nextPageNumber }
+      )
+    );
+  };
 
   if (isFetching) return <div>Loading...</div>;
 
@@ -42,25 +65,19 @@ export default function() {
             </tr>
           </thead>
           <tbody>
-            {userList.map((user, index) => {
-              const dataRangeMin =
-                +pageState.maxPerPage * (pageState.currentPage - 1);
-              const dataRangeMax =
-                +pageState.maxPerPage * pageState.currentPage;
-              return (
-                dataRangeMin <= index &&
-                dataRangeMax > index && (
-                  <tr>
-                    <th scope="row">{user.id}</th>
-                    <td>{user.name}</td>
-                    <td>{user.isAdmin ? "Yes" : "No"}</td>
-                  </tr>
-                )
-              );
-            })}
+            {userList.map(user => (
+              <tr>
+                <th scope="row">{user.id}</th>
+                <td>{user.name}</td>
+                <td>{user.isAdmin ? "Yes" : "No"}</td>
+              </tr>
+            ))}
           </tbody>
         </table>
-        <Pagination pageState={pageState} setPageState={setPageState} />
+        <Pagination
+          pageState={pageState}
+          handleClickPagination={handleClickPagination}
+        />
       </div>
     </div>
   );

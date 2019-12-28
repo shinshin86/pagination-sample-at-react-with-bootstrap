@@ -1,7 +1,7 @@
 import React from "react";
 
-export default ({ pageState, setPageState }) => {
-  const { currentPage, totalPage, maxPerPage } = pageState;
+export default ({ pageState, handleClickPagination }) => {
+  const { currentPage, totalPage } = pageState;
   return (
     <nav aria-label="Page navigation">
       <ul className="pagination">
@@ -10,9 +10,7 @@ export default ({ pageState, setPageState }) => {
             className="page-link"
             onClick={() => {
               const nextPageNumber = +currentPage - 1;
-              setPageState(
-                Object.assign({ ...pageState }, { currentPage: nextPageNumber })
-              );
+              handleClickPagination(nextPageNumber);
             }}
           >
             Previous
@@ -26,14 +24,7 @@ export default ({ pageState, setPageState }) => {
                 currentPage === pageNumber ? "page-item active" : "page-item"
               }
             >
-              <a
-                className="page-link"
-                onClick={() =>
-                  setPageState(
-                    Object.assign({ ...pageState }, { currentPage: i })
-                  )
-                }
-              >
+              <a className="page-link" onClick={() => handleClickPagination(i)}>
                 {pageNumber}
               </a>
             </li>
@@ -48,9 +39,7 @@ export default ({ pageState, setPageState }) => {
             className="page-link"
             onClick={() => {
               const nextPageNumber = +currentPage + 1;
-              setPageState(
-                Object.assign({ ...pageState }, { currentPage: nextPageNumber })
-              );
+              handleClickPagination(nextPageNumber);
             }}
           >
             Next
