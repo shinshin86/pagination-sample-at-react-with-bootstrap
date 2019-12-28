@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { getTestData } from "./test-data";
 import "./App.css";
+import Pagination from "./Pagination";
 
 export default function() {
   const [isFetching, setIsFetching] = useState(false);
   const [userList, setUsetList] = useState([]);
+  const [pageState, setPageState] = useState({
+    currentPage: 1,
+    totalPage: 0,
+    maxPerPage: 20
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,6 +20,8 @@ export default function() {
       const data = await getTestData();
       setUsetList(data);
       setIsFetching(false);
+      const totalPage = Math.ceil(data.length / pageState.maxPerPage);
+      setPageState(Object.assign({ ...pageState }, { totalPage }));
     };
 
     fetchData();
@@ -25,7 +33,7 @@ export default function() {
     <div className="App">
       <h1>Pagination Sample</h1>
       <div className="container">
-        <table class="table">
+        <table className="table">
           <thead>
             <tr>
               <th scope="col">ID</th>
@@ -34,15 +42,25 @@ export default function() {
             </tr>
           </thead>
           <tbody>
-            {userList.map(user => (
-              <tr>
-                <th scope="row">{user.id}</th>
-                <td>{user.name}</td>
-                <td>{user.isAdmin ? "Yes" : "No"}</td>
-              </tr>
-            ))}
+            {userList.map((user, index) => {
+              const dataRangeMin =
+                +pageState.maxPerPage * (pageState.currentPage - 1);
+              const dataRangeMax =
+                +pageState.maxPerPage * pageState.currentPage;
+              return (
+                dataRangeMin <= index &&
+                dataRangeMax > index && (
+                  <tr>
+                    <th scope="row">{user.id}</th>
+                    <td>{user.name}</td>
+                    <td>{user.isAdmin ? "Yes" : "No"}</td>
+                  </tr>
+                )
+              );
+            })}
           </tbody>
         </table>
+        <Pagination pageState={pageState} setPageState={setPageState} />
       </div>
     </div>
   );
