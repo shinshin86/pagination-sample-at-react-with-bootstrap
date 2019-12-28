@@ -3,17 +3,23 @@ import { getTestData } from "./test-data";
 import "./App.css";
 
 export default function() {
+  const [isFetching, setIsFetching] = useState(false);
   const [userList, setUsetList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
+      setIsFetching(true);
+
       await getTestData();
       const data = await getTestData();
       setUsetList(data);
+      setIsFetching(false);
     };
 
     fetchData();
   }, []);
+
+  if (isFetching) return <div>Loading...</div>;
 
   return (
     <div className="App">
