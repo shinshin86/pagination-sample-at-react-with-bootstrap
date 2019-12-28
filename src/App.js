@@ -19,13 +19,24 @@ export default function() {
     <div className="App">
       <h1>Pagination Sample</h1>
       <div className="container">
-        <ul className="list-group">
-          {userList.map(user => (
-            <li className="list-group-item" key={user.id}>
-              {user.name}
-            </li>
-          ))}
-        </ul>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">Admin</th>
+            </tr>
+          </thead>
+          <tbody>
+            {userList.map(user => (
+              <tr>
+                <th scope="row">{user.id}</th>
+                <td>{user.name}</td>
+                <td>{user.isAdmin ? "Yes" : "No"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </div>
   );
