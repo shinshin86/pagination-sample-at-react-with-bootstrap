@@ -4,7 +4,7 @@ import Pagination from "./Pagination";
 
 const App = () => {
   const [isFetching, setIsFetching] = useState(false);
-  const [userList, setUsetList] = useState([]);
+  const [userList, setUserList] = useState([]);
   const [currentPage , setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [maxPerPage] = useState(20);
@@ -16,7 +16,7 @@ const App = () => {
       // Fetch data
       const offset = (currentPage - 1) * maxPerPage;
       const { userList, userCount } = await getTestData({ offset });
-      setUsetList(userList);
+      setUserList(userList);
 
       // Update pagination state
       const totalPage = Math.ceil(userCount / maxPerPage);
@@ -34,7 +34,7 @@ const App = () => {
     // Fetch data
     const offset = (nextPageNumber - 1) * maxPerPage;
     const { userList, userCount } = await getTestData({ offset });
-    setUsetList(userList);
+    setUserList(userList);
 
     // Updata pagination state
     const totalPage = Math.ceil(userCount / maxPerPage);
