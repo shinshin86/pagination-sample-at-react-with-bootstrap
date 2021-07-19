@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { getTestData } from "./test-data";
-import "./App.css";
 import Pagination from "./Pagination";
 
 export default function() {
@@ -53,9 +52,9 @@ export default function() {
   if (isFetching) return <div>Loading...</div>;
 
   return (
-    <div className="App">
-      <h1>Pagination Sample</h1>
-      <div className="container">
+    <div className="container">
+      <h1 className="text-center">Pagination Sample</h1>
+      <div>
         <table className="table">
           <thead>
             <tr>
