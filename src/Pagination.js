@@ -1,7 +1,6 @@
 import React from "react";
 
-const Pagination = ({ pageState, handleClickPagination }) => {
-  const { currentPage, totalPage } = pageState;
+const Pagination = ({ currentPage, totalPage, handleClickPagination }) => {
   return (
     <nav aria-label="Page navigation">
       <ul className="pagination">

@@ -1,55 +1,48 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { getTestData } from "./test-data";
 import Pagination from "./Pagination";
 
 const App = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [userList, setUsetList] = useState([]);
-  const [pageState, setPageState] = useState({
-    currentPage: 1,
-    totalPage: 0,
-    maxPerPage: 20
-  });
+  const [currentPage , setCurrentPage] = useState(1);
+  const [totalPage, setTotalPage] = useState(0);
+  const [maxPerPage] = useState(20);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsFetching(true);
 
       // Fetch data
-      const offset = (pageState.currentPage - 1) * pageState.maxPerPage;
+      const offset = (currentPage - 1) * maxPerPage;
       const { userList, userCount } = await getTestData({ offset });
       setUsetList(userList);
 
       // Update pagination state
-      const totalPage = Math.ceil(userCount / pageState.maxPerPage);
-
-      const updatePageState = Object.assign({ ...pageState }, { totalPage });
-      setPageState(updatePageState);
+      const totalPage = Math.ceil(userCount / maxPerPage);
+      setTotalPage(totalPage);
 
       setIsFetching(false);
     };
 
     fetchData();
-  }, []);
+  }, [currentPage, maxPerPage]);
 
-  const handleClickPagination = async nextPageNumber => {
+  const handleClickPagination = useCallback(async (nextPageNumber) => {
     setIsFetching(true);
 
     // Fetch data
-    const offset = (nextPageNumber - 1) * pageState.maxPerPage;
+    const offset = (nextPageNumber - 1) * maxPerPage;
     const { userList, userCount } = await getTestData({ offset });
     setUsetList(userList);
-    setIsFetching(false);
 
     // Updata pagination state
-    const totalPage = Math.ceil(userCount / pageState.maxPerPage);
-    setPageState(
-      Object.assign(
-        { ...pageState },
-        { totalPage, currentPage: nextPageNumber }
-      )
-    );
-  };
+    const totalPage = Math.ceil(userCount / maxPerPage);
+    setTotalPage(totalPage);
+    setCurrentPage(nextPageNumber);
+
+    setIsFetching(false);
+  }, [maxPerPage]);
 
   if (isFetching) return <div>Loading...</div>;
 
@@ -76,7 +69,8 @@ const App = () => {
           </tbody>
         </table>
         <Pagination
-          pageState={pageState}
+          currentPage={currentPage}
+          totalPage={totalPage}
           handleClickPagination={handleClickPagination}
         />
       </div>
