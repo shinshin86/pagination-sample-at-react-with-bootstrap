@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { getTestData } from "./test-data";
 import Pagination from "./Pagination";
 
-export default function() {
+const App = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [userList, setUsetList] = useState([]);
   const [pageState, setPageState] = useState({
@@ -16,15 +16,17 @@ export default function() {
       setIsFetching(true);
 
       // Fetch data
-      await getTestData();
       const offset = (pageState.currentPage - 1) * pageState.maxPerPage;
       const { userList, userCount } = await getTestData({ offset });
       setUsetList(userList);
-      setIsFetching(false);
 
       // Update pagination state
       const totalPage = Math.ceil(userCount / pageState.maxPerPage);
-      setPageState(Object.assign({ ...pageState }, { totalPage }));
+
+      const updatePageState = Object.assign({ ...pageState }, { totalPage });
+      setPageState(updatePageState);
+
+      setIsFetching(false);
     };
 
     fetchData();
@@ -65,7 +67,7 @@ export default function() {
           </thead>
           <tbody>
             {userList.map(user => (
-              <tr>
+              <tr key={user.id}>
                 <th scope="row">{user.id}</th>
                 <td>{user.name}</td>
                 <td>{user.isAdmin ? "Yes" : "No"}</td>
@@ -81,3 +83,5 @@ export default function() {
     </div>
   );
 }
+
+export default App;

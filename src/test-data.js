@@ -7,7 +7,7 @@ export const getTestData = async (option = {}) => {
   const rangeMax = offset + limit;
   const userCount = dataList.length;
   const userList = dataList.filter(data => {
-    if (rangeMin <= data.id && rangeMax > data.id) return data;
+    return rangeMin <= data.id && rangeMax > data.id;
   });
 
   return { userList, userCount };

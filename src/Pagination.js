@@ -1,12 +1,12 @@
 import React from "react";
 
-export default ({ pageState, handleClickPagination }) => {
+const Pagination = ({ pageState, handleClickPagination }) => {
   const { currentPage, totalPage } = pageState;
   return (
     <nav aria-label="Page navigation">
       <ul className="pagination">
         <li className={+currentPage === 1 ? "page-item disabled" : "page-item"}>
-          <a
+          <span
             className="page-link"
             onClick={() => {
               const nextPageNumber = +currentPage - 1;
@@ -14,7 +14,7 @@ export default ({ pageState, handleClickPagination }) => {
             }}
           >
             Previous
-          </a>
+          </span>
         </li>
         {Array.from(new Array(totalPage)).map((v, i) => {
           const pageNumber = ++i;
@@ -23,10 +23,11 @@ export default ({ pageState, handleClickPagination }) => {
               className={
                 currentPage === pageNumber ? "page-item active" : "page-item"
               }
+              key={i}
             >
-              <a className="page-link" onClick={() => handleClickPagination(i)}>
+              <span className="page-link" onClick={() => handleClickPagination(i)}>
                 {pageNumber}
-              </a>
+              </span>
             </li>
           );
         })}
@@ -35,7 +36,7 @@ export default ({ pageState, handleClickPagination }) => {
             +currentPage === +totalPage ? "page-item disabled" : "page-item"
           }
         >
-          <a
+          <span
             className="page-link"
             onClick={() => {
               const nextPageNumber = +currentPage + 1;
@@ -43,9 +44,11 @@ export default ({ pageState, handleClickPagination }) => {
             }}
           >
             Next
-          </a>
+          </span>
         </li>
       </ul>
     </nav>
   );
 };
+
+export default Pagination;
