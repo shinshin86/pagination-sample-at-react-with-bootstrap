@@ -47,7 +47,14 @@ const App = () => {
     [maxPerPage]
   );
 
-  if (isFetching) return <div>Loading...</div>;
+  if (isFetching)
+    return (
+      <div className="container">
+        <div className="spinner-border" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
 
   return (
     <div className="container">
