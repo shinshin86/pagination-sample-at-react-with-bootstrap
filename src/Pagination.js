@@ -24,7 +24,10 @@ const Pagination = ({ currentPage, totalPage, handleClickPagination }) => {
               }
               key={i}
             >
-              <span className="page-link" onClick={() => handleClickPagination(i)}>
+              <span
+                className="page-link"
+                onClick={() => handleClickPagination(i)}
+              >
                 {pageNumber}
               </span>
             </li>

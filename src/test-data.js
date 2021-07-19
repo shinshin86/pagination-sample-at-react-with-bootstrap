@@ -1,4 +1,4 @@
-const sleep = msec => new Promise(resolve => setTimeout(resolve, msec));
+const sleep = (msec) => new Promise((resolve) => setTimeout(resolve, msec));
 export const getTestData = async (option = {}) => {
   const { limit = 20, offset = 0 } = option;
   await sleep(1000);
@@ -6,7 +6,7 @@ export const getTestData = async (option = {}) => {
   const rangeMin = offset;
   const rangeMax = offset + limit;
   const userCount = dataList.length;
-  const userList = dataList.filter(data => {
+  const userList = dataList.filter((data) => {
     return rangeMin <= data.id && rangeMax > data.id;
   });
 
@@ -113,5 +113,5 @@ const dataList = [
   { id: 97, name: "Test97", isAdmin: true },
   { id: 98, name: "Test98", isAdmin: false },
   { id: 99, name: "Test99", isAdmin: true },
-  { id: 100, name: "Test100", isAdmin: false }
+  { id: 100, name: "Test100", isAdmin: false },
 ];

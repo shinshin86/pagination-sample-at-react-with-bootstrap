@@ -5,7 +5,7 @@ import Pagination from "./Pagination";
 const App = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [userList, setUserList] = useState([]);
-  const [currentPage , setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
   const [maxPerPage] = useState(20);
 
@@ -28,21 +28,24 @@ const App = () => {
     fetchData();
   }, [currentPage, maxPerPage]);
 
-  const handleClickPagination = useCallback(async (nextPageNumber) => {
-    setIsFetching(true);
+  const handleClickPagination = useCallback(
+    async (nextPageNumber) => {
+      setIsFetching(true);
 
-    // Fetch data
-    const offset = (nextPageNumber - 1) * maxPerPage;
-    const { userList, userCount } = await getTestData({ offset });
-    setUserList(userList);
+      // Fetch data
+      const offset = (nextPageNumber - 1) * maxPerPage;
+      const { userList, userCount } = await getTestData({ offset });
+      setUserList(userList);
 
-    // Updata pagination state
-    const totalPage = Math.ceil(userCount / maxPerPage);
-    setTotalPage(totalPage);
-    setCurrentPage(nextPageNumber);
+      // Updata pagination state
+      const totalPage = Math.ceil(userCount / maxPerPage);
+      setTotalPage(totalPage);
+      setCurrentPage(nextPageNumber);
 
-    setIsFetching(false);
-  }, [maxPerPage]);
+      setIsFetching(false);
+    },
+    [maxPerPage]
+  );
 
   if (isFetching) return <div>Loading...</div>;
 
@@ -59,7 +62,7 @@ const App = () => {
             </tr>
           </thead>
           <tbody>
-            {userList.map(user => (
+            {userList.map((user) => (
               <tr key={user.id}>
                 <th scope="row">{user.id}</th>
                 <td>{user.name}</td>
@@ -76,6 +79,6 @@ const App = () => {
       </div>
     </div>
   );
-}
+};
 
 export default App;
