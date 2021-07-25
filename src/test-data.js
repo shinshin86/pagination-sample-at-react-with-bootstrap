@@ -1,117 +1,23 @@
 const sleep = (msec) => new Promise((resolve) => setTimeout(resolve, msec));
+
+const generateDataList = (dataCount) => {
+  return [...Array(dataCount).keys()].map((index) => {
+    const id = index + 1;
+
+    return { id, name: `Test${id}`, isAdmin: id % 2 === 0 };
+  });
+};
+
 export const getTestData = async (option = {}) => {
-  const { limit = 20, offset = 0 } = option;
+  const { limit = 20, offset = 0, dataCount = 100 } = option;
   await sleep(1000);
 
   const rangeMin = offset;
   const rangeMax = offset + limit;
-  const userCount = dataList.length;
-  const userList = dataList.filter((data) => {
+  const userCount = dataCount;
+  const userList = generateDataList(dataCount).filter((data) => {
     return rangeMin <= data.id && rangeMax > data.id;
   });
 
   return { userList, userCount };
 };
-
-const dataList = [
-  { id: 1, name: "Test1", isAdmin: true },
-  { id: 2, name: "Test2", isAdmin: false },
-  { id: 3, name: "Test3", isAdmin: true },
-  { id: 4, name: "Test4", isAdmin: false },
-  { id: 5, name: "Test5", isAdmin: true },
-  { id: 6, name: "Test6", isAdmin: false },
-  { id: 7, name: "Test7", isAdmin: true },
-  { id: 8, name: "Test8", isAdmin: false },
-  { id: 9, name: "Test9", isAdmin: true },
-  { id: 10, name: "Test10", isAdmin: false },
-  { id: 11, name: "Test11", isAdmin: true },
-  { id: 12, name: "Test12", isAdmin: false },
-  { id: 13, name: "Test13", isAdmin: true },
-  { id: 14, name: "Test14", isAdmin: false },
-  { id: 15, name: "Test15", isAdmin: true },
-  { id: 16, name: "Test16", isAdmin: false },
-  { id: 17, name: "Test17", isAdmin: true },
-  { id: 18, name: "Test18", isAdmin: false },
-  { id: 19, name: "Test19", isAdmin: true },
-  { id: 20, name: "Test20", isAdmin: false },
-  { id: 21, name: "Test21", isAdmin: true },
-  { id: 22, name: "Test22", isAdmin: false },
-  { id: 23, name: "Test23", isAdmin: true },
-  { id: 24, name: "Test24", isAdmin: false },
-  { id: 25, name: "Test25", isAdmin: true },
-  { id: 26, name: "Test26", isAdmin: false },
-  { id: 27, name: "Test27", isAdmin: true },
-  { id: 28, name: "Test28", isAdmin: false },
-  { id: 29, name: "Test29", isAdmin: true },
-  { id: 30, name: "Test30", isAdmin: false },
-  { id: 31, name: "Test31", isAdmin: true },
-  { id: 32, name: "Test32", isAdmin: false },
-  { id: 33, name: "Test33", isAdmin: true },
-  { id: 34, name: "Test34", isAdmin: false },
-  { id: 35, name: "Test35", isAdmin: true },
-  { id: 36, name: "Test36", isAdmin: false },
-  { id: 37, name: "Test37", isAdmin: true },
-  { id: 38, name: "Test38", isAdmin: false },
-  { id: 39, name: "Test39", isAdmin: true },
-  { id: 40, name: "Test40", isAdmin: false },
-  { id: 41, name: "Test41", isAdmin: true },
-  { id: 42, name: "Test42", isAdmin: false },
-  { id: 43, name: "Test43", isAdmin: true },
-  { id: 44, name: "Test44", isAdmin: false },
-  { id: 45, name: "Test45", isAdmin: true },
-  { id: 46, name: "Test46", isAdmin: false },
-  { id: 47, name: "Test47", isAdmin: true },
-  { id: 48, name: "Test48", isAdmin: false },
-  { id: 49, name: "Test49", isAdmin: true },
-  { id: 50, name: "Test50", isAdmin: false },
-  { id: 51, name: "Test51", isAdmin: true },
-  { id: 52, name: "Test52", isAdmin: false },
-  { id: 53, name: "Test53", isAdmin: true },
-  { id: 54, name: "Test54", isAdmin: false },
-  { id: 55, name: "Test55", isAdmin: true },
-  { id: 56, name: "Test56", isAdmin: false },
-  { id: 57, name: "Test57", isAdmin: true },
-  { id: 58, name: "Test58", isAdmin: false },
-  { id: 59, name: "Test59", isAdmin: true },
-  { id: 60, name: "Test60", isAdmin: false },
-  { id: 61, name: "Test61", isAdmin: true },
-  { id: 62, name: "Test62", isAdmin: false },
-  { id: 63, name: "Test63", isAdmin: true },
-  { id: 64, name: "Test64", isAdmin: false },
-  { id: 65, name: "Test65", isAdmin: true },
-  { id: 66, name: "Test66", isAdmin: false },
-  { id: 67, name: "Test67", isAdmin: true },
-  { id: 68, name: "Test68", isAdmin: false },
-  { id: 69, name: "Test69", isAdmin: true },
-  { id: 70, name: "Test70", isAdmin: false },
-  { id: 71, name: "Test71", isAdmin: true },
-  { id: 72, name: "Test72", isAdmin: false },
-  { id: 73, name: "Test73", isAdmin: true },
-  { id: 74, name: "Test74", isAdmin: false },
-  { id: 75, name: "Test75", isAdmin: true },
-  { id: 76, name: "Test76", isAdmin: false },
-  { id: 77, name: "Test77", isAdmin: true },
-  { id: 78, name: "Test78", isAdmin: false },
-  { id: 79, name: "Test79", isAdmin: true },
-  { id: 80, name: "Test80", isAdmin: false },
-  { id: 81, name: "Test81", isAdmin: true },
-  { id: 82, name: "Test82", isAdmin: false },
-  { id: 83, name: "Test83", isAdmin: true },
-  { id: 84, name: "Test84", isAdmin: false },
-  { id: 85, name: "Test85", isAdmin: true },
-  { id: 86, name: "Test86", isAdmin: false },
-  { id: 87, name: "Test87", isAdmin: true },
-  { id: 88, name: "Test88", isAdmin: false },
-  { id: 89, name: "Test89", isAdmin: true },
-  { id: 90, name: "Test90", isAdmin: false },
-  { id: 91, name: "Test91", isAdmin: true },
-  { id: 92, name: "Test92", isAdmin: false },
-  { id: 93, name: "Test93", isAdmin: true },
-  { id: 94, name: "Test94", isAdmin: false },
-  { id: 95, name: "Test95", isAdmin: true },
-  { id: 96, name: "Test96", isAdmin: false },
-  { id: 97, name: "Test97", isAdmin: true },
-  { id: 98, name: "Test98", isAdmin: false },
-  { id: 99, name: "Test99", isAdmin: true },
-  { id: 100, name: "Test100", isAdmin: false },
-];
