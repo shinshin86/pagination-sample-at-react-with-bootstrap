@@ -1,51 +1,66 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { getTestData } from "./test-data";
 import Pagination from "./Pagination";
+import Modal from "./Modal";
 
 const App = () => {
   const [isFetching, setIsFetching] = useState(false);
   const [userList, setUserList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPage, setTotalPage] = useState(0);
-  const [maxPerPage] = useState(20);
+  const [limit, setLimit] = useState(20);
+  const [dataCount, setDataCount] = useState(100);
 
   useEffect(() => {
-    const fetchData = async () => {
-      setIsFetching(true);
-
-      // Fetch data
-      const offset = (currentPage - 1) * maxPerPage;
-      const { userList, userCount } = await getTestData({ offset });
-      setUserList(userList);
-
-      // Update pagination state
-      const totalPage = Math.ceil(userCount / maxPerPage);
-      setTotalPage(totalPage);
-
-      setIsFetching(false);
-    };
-
     fetchData();
-  }, [currentPage, maxPerPage]);
+  }, [currentPage]);
+
+  const fetchData = useCallback(async () => {
+    setIsFetching(true);
+
+    // Fetch data
+    const offset = (currentPage - 1) * limit;
+    const { userList, userCount } = await getTestData({
+      limit,
+      offset,
+      dataCount,
+    });
+
+    setUserList(userList);
+
+    // Update pagination state
+    const totalPage = Math.ceil(userCount / limit);
+    setTotalPage(totalPage);
+
+    setIsFetching(false);
+  }, [limit, dataCount, currentPage]);
 
   const handleClickPagination = useCallback(
     async (nextPageNumber) => {
       setIsFetching(true);
 
       // Fetch data
-      const offset = (nextPageNumber - 1) * maxPerPage;
-      const { userList, userCount } = await getTestData({ offset });
+      const offset = (nextPageNumber - 1) * limit;
+      const { userList, userCount } = await getTestData({
+        limit,
+        offset,
+        dataCount,
+      });
       setUserList(userList);
 
       // Updata pagination state
-      const totalPage = Math.ceil(userCount / maxPerPage);
+      const totalPage = Math.ceil(userCount / limit);
       setTotalPage(totalPage);
       setCurrentPage(nextPageNumber);
 
       setIsFetching(false);
     },
-    [maxPerPage]
+    [limit, dataCount]
   );
+
+  const handleSubmitDataResource = async () => {
+    await fetchData();
+  };
 
   if (isFetching)
     return (
@@ -59,6 +74,16 @@ const App = () => {
   return (
     <div className="container">
       <h1 className="text-center">Pagination Sample</h1>
+      <div className="m-3 text-center">
+        <button
+          type="button"
+          className="btn btn-primary"
+          data-toggle="modal"
+          data-target="#dataModal"
+        >
+          Launch data modal
+        </button>
+      </div>
       <div>
         <table className="table">
           <thead>
@@ -84,6 +109,13 @@ const App = () => {
           handleClickPagination={handleClickPagination}
         />
       </div>
+      <Modal
+        limit={limit}
+        dataCount={dataCount}
+        setLimit={setLimit}
+        setDataCount={setDataCount}
+        handleSubmitDataResource={handleSubmitDataResource}
+      />
     </div>
   );
 };
