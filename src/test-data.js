@@ -8,15 +8,15 @@ const generateDataList = (dataCount) => {
   });
 };
 
-export const getTestData = async (option = {}) => {
-  const { limit = 20, offset = 0, dataCount = 100 } = option;
+export const getTestData = async (option) => {
+  const { limit, offset, dataCount } = option;
   await sleep(1000);
 
   const rangeMin = offset;
-  const rangeMax = offset + limit;
+  const rangeMax = Number(offset) + Number(limit);
   const userCount = dataCount;
-  const userList = generateDataList(dataCount).filter((data) => {
-    return rangeMin <= data.id && rangeMax > data.id;
+  const userList = generateDataList(Number(dataCount)).filter((data) => {
+    return rangeMin < data.id && rangeMax >= data.id;
   });
 
   return { userList, userCount };
